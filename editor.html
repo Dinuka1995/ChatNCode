@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>editor</title>
+
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="/socket.io/socket.io.js"></script>
+	<script src="/jquery/FileSaver.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+	<div class="container-fluid" id="jsEditor" style="background-color: #121615; color: white;">
+
+		<div class="row" style="background-color:gray; padding-top: 20px;">
+
+			<form id="code_form">
+
+				<div class="container-fluid">
+   <!--  <div class="navbar-header">
+      <a class="navbar-brand" style="font-size:24px;color: lightblue;padding-right: 20px;padding-left: 20px;" href="#">ChatNCode</a>
+    </div> -->
+    <ul class="nav navbar-nav">
+    	<li   style="font-size:24px;color: lightblue;padding-right: 20px;padding-left: 20px;">  <input id="file_name" type="text" class="form-control" name="file_name" placeholder="File name">  <l>
+      <li class="fa fa-save" onclick="saveFile()" id="save_file" style="font-size:24px;color: lightblue;padding-right: 20px;padding-left: 20px;"><a href="#"></a><l>
+      	<li style="padding-right: 20px" ><label class="btn btn-default btn-file fa fa-upload" ><input id="file_upload" name="file_upload" type="file" style="display: none;" ></label></li>
+     <!--  <li class="fa fa-upload" style="font-size:24px;color:lightblue; padding-right: 20px;padding-left: 20px;"><a href="#"></a><l> -->
+
+      	<li>
+      	<div class="dropdown ">
+		  <select onchange="val()" id="type"  class="form-control btn btn-primary" style="padding-right: 40px; "  >
+			<option value="Select_Type">Select_Type</option>
+			 <option value="java">java</option>
+			 <option value="javascript">javascript</option>
+			 <option value="c++">C++</option>
+			 <option value="c">C</option>
+			 <option value="html">HTML</option>
+			</select>
+		</div> <!-- dropdown -->
+
+		</li>
+
+		<li>
+
+			<div class="row  ">
+					<div class="col-md-5">
+						<h4 style="color: lightblue;padding-left: 20px">Theme:</h4>
+					</div>
+					<div class="col-md-7">
+						<div class="dropdown  ">
+							  <select onchange="setTheme()" class="btn btn-primary" style="padding-right: 40px; " id="theme">
+								 <option value="terminal">terminal</option>
+								 <option value="xcode">xcode</option>
+								 
+								 <option value="github">github</option>
+
+								</select>
+						</div> <!-- dropdown -->
+
+					</div>
+
+			</div>
+
+		</li>
+
+		<li>
+
+			<div class="row  ">
+					<div class="col-md-5">
+						<!-- <h4 style="color: lightblue;padding-left: 20px;">S_ID:</h4> -->
+
+					</div>
+					<div class="col-md-7">
+						<label >Session_ID</label>
+						<textarea readonly="" class="form-control" rows="1"></textarea>
+					</div>
+
+					 
+
+				</div>
+
+		</li>
+
+
+
+
+    </ul>
+    <ul class="nav navbar-nav navbar-right" style="color: lightblue;margin-right: 150px;">
+      	<h3><i>Chat & Code</i></h3>
+    </ul>
+  </div>
+
+
+
+			<div class="row">
+
+
+				<div class="col-md-9" style=" height:760px;" id="message1">
+
+				</div>
+		</form>  <!-- code form end -->
+				<div class="col-md-2" style="background-color: grey;">
+
+					<form id="chat" action="#">
+						
+						<div class="row">
+							<textarea readonly="true" class="form-control" rows="25" id="chat_area"></textarea>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-12">
+								<input type="text" name="mess" id="mess" class="form-control" placeholder="type here">
+								<button type="submit" class="btn" id="chat_submit"><i class="fa fa-send-o" style="font-size:20px;color:red"></i></button>
+							</div>
+							<!-- <div class="col-md-3"> -->
+								<!-- <input type="submit"  id="chat_submit"  class="btn btn-success" value="" name="chat_submit"> -->
+								<!-- <button type="submit" class="btn" id="chat_submit"><i class="fa fa-send-o" style="font-size:20px;color:red"></i></button> -->
+					<!-- 		</div> -->
+							
+						</div>
+
+
+					</form>
+
+				</div>
+				<div class="col-md-1">
+					
+				</div>
+
+
+
+			</div> <!-- row -->
+<!--
+			<div class="col-md-4">
+				<input type="submit" id="submit" name="submit" value="send" class="btn btn-success">
+			</div> -->
+
+
+
+			
+
+		</div> <!-- row -->
+
+
+
+
+
+
+	</div>
+
+	 
+
+
+<!--  set the editor -->
+	<script type="text/javascript">
+		//var type = $('#dropdown').val();
+
+		var d='html';
+
+		function val(){
+			 d = document.getElementById("type").value;
+			 console.log(d);
+			 var editor=ace.edit("message1");
+			editor.getSession().setMode('ace/mode/'+d);
+			editor.setTheme('ace/theme/terminal');
+			editor.getSession().setTabSize(2);
+
+		}
+
+		var editor=ace.edit("message1");
+		editor.getSession().setMode('ace/mode/'+d);
+		editor.setTheme('ace/theme/terminal');
+
+	</script>
+
+ <!-- set the theme -->
+	<script type="text/javascript">
+		function setTheme(){
+			 theme = document.getElementById("theme").value;
+			 console.log(d);
+			 var editor=ace.edit("message1");
+			//editor.getSession().setMode('ace/mode/'+d);
+			editor.setTheme('ace/theme/'+theme);
+			//editor.getSession().setTabSize(2);
+
+		}
+
+	</script>
+
+
+	<!-- file upload -->
+	<script >
+		
+		document.getElementById('file_upload').addEventListener('change',function(){
+			var fr= new FileReader();
+
+			fr.onload=function(){
+				//alert(this.result);
+				editor.setValue(""+this.result);
+			}
+
+			fr.readAsText(this.files[0]);
+		});
+
+
+// 		var file_upload_name="";
+
+// 		function myFunction(){
+			 
+//   var x = document.getElementById("file_upload");
+//   var txt = "";
+//   if ('files' in x) {
+//     if (x.files.length == 0) {
+//       txt = "Select one or more files.";
+//     } else {
+//       for (var i = 0; i < x.files.length; i++) {
+
+//         txt += "<br><strong>" + (i+1) + ". file</strong><br>";
+//         var file = x.files[i];
+//         file_upload_name=file.name;
+//         alert(file.name);
+//         if ('name' in file) {
+//           txt += "name: " + file.name + "<br>";
+//         }
+//         if ('size' in file) {
+//           txt += "size: " + file.size + " bytes <br>";
+//         }
+//       }
+//     }
+//   } 
+   
+// }
+	
+// 	var reader=new FileReader();
+
+// 	reader.onload = function(){
+// 		alert(this.result);
+// 	}
+// 	reader.readAsText(file_upload_name.);
+
+
+
+
+	</script>
+
+ 
+
+
+
+<!-- save file -->
+	<script type="text/javascript">
+
+	function saveFile(){
+
+
+
+		fs= require('fs');
+
+
+		var $messegeForm =$('#code_form');
+		var $message = editor;
+		var  $chat=editor;
+		var data=editor.getValue();
+		var file_name=document.getElementById("file_name").value;
+
+		var type=document.getElementById("type").value;
+
+		if(file_name==""){
+			alert("Enter the file name!");
+		}
+
+		if(type=='java'){
+			var blob=new Blob([data],{type:"Application/java"});
+			saveAs(blob,file_name+".java");
+		}else if(type=='javascript'){
+			var blob=new Blob([data],{type:"Application/javascript"});
+			saveAs(blob,file_name+".js");
+		}else if(type=='html'){
+			var blob=new Blob([data],{type:"text/html"});
+			saveAs(blob,file_name+".html");
+		}
+		else if(type=='Select_Type'){
+			alert('First select the file type !!');
+		}
+
+
+
+
+
+		//console.log(data);
+
+
+
+
+	}
+
+	</script>
+
+
+
+<!--  send the code -->
+  <script>
+
+		$(function(){
+			var socket =io.connect();
+      		var $messegeForm =$('#code_form');
+      		var $message = editor;
+     		var  $chat=editor;
+
+
+ //     $messegeForm.keypress(function(e){
+ //  		alert("sasdaddddddddddddddddddddddddddd");
+
+ //  		e.preventDefault();
+ //        console.log('submitted');
+ //        socket.emit('send message',editor.getValue());
+
+
+	// });
+
+
+ 	$messegeForm.keyup(function (e){
+    	if(e.keyCode == 13){
+    		e.preventDefault();
+        	console.log('submitted');
+        	socket.emit('send message',editor.getValue());
+        	document.getSelection().removeAllRanges();
+        	//$('#message1').prop("selected", false)
+        	//alert('you pressed enter ^_^');
+    	}
+	});
+
+      // $messegeForm.submit(function(e){
+      //   e.preventDefault();
+      //   console.log('submitted');
+      //   socket.emit('send message',editor.getValue());
+
+      // });
+        socket.on('new message',function(data){
+          editor.setValue(""+data.msg);
+          //$message.val(""+data.msg);
+        });
+
+
+        // chat message passing through the same socket
+
+        var $chat_form =$('#chat');
+
+			var $chat_area=$('#chat_area');
+			var $mes=$("#mess").val();
+
+      		$chat_form.submit(function(e){
+      			console.log(e);
+      			//alert($("#mess").val());
+        		e.preventDefault();
+        		//console.log('message send');
+        		$chat_area.val(" "+$chat_area.val()+"\n"+$mes);
+				socket.emit('chat message',$("#mess").val());
+        
+				$("#mess").val("");
+      		});
+
+      		socket.on('new_chat_message',function(data){
+         		
+         		$chat_area.val(" "+$chat_area.val()+"\n"+data.msg);
+          		//$message.val(""+data.msg);
+        	});
+
+
+
+
+
+		});
+	</script>
+
+	<!-- chat send  -->
+	<script>
+
+
+		// $(function(){
+
+		// 	//var socket =io.connect();
+		
+		 
+		// 	var $chat_form =$('#chat');
+
+		// 	var $chat_area=$('#chat_area');
+
+  //     		$chat_form.submit(function(e){
+
+				
+
+		// 		var chat_message=$("#mess").val();
+  //     			alert(chat_message);
+  //       		e.preventDefault();
+  //       		console.log('message send');
+
+
+
+  //       	socket.emit('chat message',chat_message);
+        
+
+  //     		});
+
+  //     		socket.on('new chat message',function(data){
+         		
+  //        		$chat_area.val(" "+data.chat_mes);
+  //         		//$message.val(""+data.msg);
+  //       	});
+
+  //     	});
+
+
+	</script>
+
+
+
+</body>
+</html>

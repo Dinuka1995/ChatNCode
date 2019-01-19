@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Emiter video</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+	<video src="" id="video" style="width:500px; height: 400px;" autoplay="true"></video>
+
+	<canvas id="preview"></canvas>
+	<div id="logger"></div>
+
+	<script type="text/javascript">
+		var canvas= document.getElementById("preview");
+		var context= canvas.getContext("2d");
+		canvas.width=600;
+		canvas.height=400;
+
+		context.width = canvas.width;
+		context.height = canvas.height;
+
+		var video =document.getElementById("video");
+
+		var socket = io();
+
+		function logger(msg){
+			$('#logger').text(msg);
+		}
+
+		function loadCam(stream){
+			logger('Camera successfully connecting!');
+		}
+
+		function loadFail()
+		{
+			logger(' Camera connecting failed!')
+		}
+
+		function viewVideo(video,context){
+			context.drawImage(video,0,0,context.width,context.height);
+		}
+
+		$(function(){
+			navigator.getUserMedia = ()
+		});
+
+	</script>
+
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<nav class="navbar navbar-default" style="padding-top: 15px;background-color: black">
+  <div class="container-fluid">
+   <!--  <div class="navbar-header">
+      <a class="navbar-brand" style="font-size:24px;color: lightblue;padding-right: 20px;padding-left: 20px;" href="#">ChatNCode</a>
+    </div> -->
+    <ul class="nav navbar-nav">
+      <li class="fa fa-save" style="font-size:24px;color: lightblue;padding-right: 20px;padding-left: 20px;"><a href="#"></a><l>
+      <li class="fa fa-upload" style="font-size:24px;color:lightblue; padding-right: 20px;padding-left: 20px;"><a href="#"></a><l>
+      
+      	<li>	
+      	<div class="dropdown ">
+		  <select onchange="val()" id="type"  class="form-control btn btn-primary" style="padding-right: 40px; "  >
+			<option value="Select_Type">Select_Type</option>
+			 <option value="java">java</option>
+			 <option value="javascript">javascript</option>
+			 <option value="c++">C++</option>
+			 <option value="c">C</option>
+			 <option value="html">HTML</option>
+			</select>
+		</div> <!-- dropdown -->
+
+		</li>
+
+		<li>
+			
+			<div class="row  ">
+					<div class="col-md-5">
+						<h4 style="color: lightblue;padding-left: 20px">Theme:</h4>
+					</div>
+					<div class="col-md-7">
+						<div class="dropdown  ">
+							  <select onchange="setTheme()" class="btn btn-primary" style="padding-right: 40px; " id="theme">
+								 <option value="xcode">xcode</option>
+								 <option value="terminal">terminal</option>
+								 <option value="github">github</option>
+
+								</select>
+						</div> <!-- dropdown -->
+
+					</div>
+
+				</div>
+
+		</li>
+
+		<li>
+
+			<div class="row  ">
+					<div class="col-md-5">
+						<h4 style="color: lightblue;padding-left: 20px;">Font:</h4>
+					</div>
+					<div class="col-md-7">
+
+					</div>
+
+				</div>
+			
+		</li>
+
+		
+
+
+    </ul>
+    <ul class="nav navbar-nav navbar-right" style="color: lightblue;margin-right: 20px;">
+      	<h3><i>Chat & Code</i></h3>
+    </ul>
+  </div>
+</nav>
+  
+<!-- <div class="container">
+  <h3>Basic Navbar Example</h3>
+  <p>A navigation bar is a navigation header that is placed at the top of the page.</p>
+</div> -->
+
+</body>
+</html>
