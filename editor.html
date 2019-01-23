@@ -28,7 +28,7 @@
     <ul class="nav navbar-nav">
     	<li   style="font-size:24px;color: lightblue;padding-right: 20px;padding-left: 20px;">  <input id="file_name" type="text" class="form-control" name="file_name" placeholder="File name">  <l>
       <li class="fa fa-save" onclick="saveFile()" id="save_file" style="font-size:24px;color: lightblue;padding-right: 20px;padding-left: 20px;"><a href="#"></a><l>
-      	<li style="padding-right: 20px" ><label class="btn btn-default btn-file fa fa-upload" ><input id="file_upload" name="file_upload" type="file" style="display: none;" ></label></li>
+      	<li style="padding-right: 20px" ><label class="btn btn-default btn-file fa fa-upload" ><input class="btn btn-success" id="file_upload" name="file_upload" type="file" style="display: none;" ></label></li>
      <!--  <li class="fa fa-upload" style="font-size:24px;color:lightblue; padding-right: 20px;padding-left: 20px;"><a href="#"></a><l> -->
 
       	<li>
@@ -48,11 +48,14 @@
 		<li>
 
 			<div class="row  ">
-					<div class="col-md-5">
-						<h4 style="color: lightblue;padding-left: 20px">Theme:</h4>
+
+				<!-- compile and run -->
+					<div class="col-md-3">
+						<!-- <button class="btn btn-success" onclick="compile_run()"><i class="fa fa-cog"></i> & <i class="fa fa-play"></i></button> -->
 					</div>
-					<div class="col-md-7">
+					<div class="col-md-9">
 						<div class="dropdown  ">
+							<label for="theme">Theme</label>
 							  <select onchange="setTheme()" class="btn btn-primary" style="padding-right: 40px; " id="theme">
 								 <option value="terminal">terminal</option>
 								 <option value="xcode">xcode</option>
@@ -71,13 +74,50 @@
 		<li>
 
 			<div class="row  ">
-					<div class="col-md-5">
+					<div class="col-md-1"></div>
+					<div class="col-md-3">
 						<!-- <h4 style="color: lightblue;padding-left: 20px;">S_ID:</h4> -->
+						<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#join_session">join</button>
+
+						  <!-- Modal -->
+						  <div class="modal fade" id="join_session" role="dialog">
+						    <div class="modal-dialog modal-sm">
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal">&times;</button>
+						          <h4 style="color: black" class="modal-title">Enter the session id :</h4>
+						        </div>
+
+						      <!--   <form id="join_form"> -->
+
+
+						        	<div class="modal-body">
+
+						        	    <input class="form-control" type="text" id="ss_id" name="username" placeholder="Session ID" required="">
+						        	    <input type="button" class="btn btn-success"  data-dismiss="modal" value="join now" name="join">
+
+						        	</div>
+						        	<!-- <div class="modal-footer">
+						          		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						        	</div> -->
+
+						      <!--   </form>  --><!-- join_form -->
+						      </div>
+						    </div>
+						  </div>
+						
 
 					</div>
-					<div class="col-md-7">
+					<div class="col-md-6">
 						<label >Session_ID</label>
-						<textarea readonly="" class="form-control" rows="1"></textarea>
+						<textarea readonly="" class="form-control" id="Session_ID" rows="1"></textarea>
+					</div>
+
+					<div class="col-md-2">
+						<!-- <button class="btn btn-success" href="" id="" style="background-color: red" onclick="logout_func()" > <i class="fa fa-power-off"></i></button> -->
+						<a style="background-color: red; padding: 5px;color: white"  href="/chatncode/v1" class="fa fa-power-off"></a>
+						<!-- <button class="btn btn-success" onclick="logout_func()"></button> -->
+
 					</div>
 
 					 
@@ -115,7 +155,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<input type="text" name="mess" id="mess" class="form-control" placeholder="type here">
-								<button type="submit" class="btn" id="chat_submit"><i class="fa fa-send-o" style="font-size:20px;color:red"></i></button>
+								<button type="submit"  class="btn" id="chat_submit"><i class="fa fa-send-o" style="font-size:20px;color:red"></i></button>
 							</div>
 							<!-- <div class="col-md-3"> -->
 								<!-- <input type="submit"  id="chat_submit"  class="btn btn-success" value="" name="chat_submit"> -->
@@ -128,9 +168,7 @@
 					</form>
 
 				</div>
-				<div class="col-md-1">
-					
-				</div>
+				
 
 
 
@@ -153,7 +191,32 @@
 
 	</div>
 
-	 
+	 <!-- compile and run -->
+
+	 <!-- <script type="text/javascript">
+	 	
+	 	function logout_func() {
+	 		window.location.replace("http://stackoverflow.com");
+	 		//var file_name=document.getElementById("file_name").value;
+
+	 		//alert(file_name);
+	 	}
+
+
+	 </script> -->
+
+	<!--  <script type="text/javascript">
+	 	function joinSession(){
+	 		var ssId=document.getElementById("ss_id").value;
+	 		document.getElementById("Session_ID").value=ssId;
+
+	 		
+
+
+	 		//alert(ssId);
+	 	}
+	 </script> -->
+
 
 
 <!--  set the editor -->
@@ -311,7 +374,22 @@
       		var $messegeForm =$('#code_form');
       		var $message = editor;
      		var  $chat=editor;
+     		var ids_arr = ['WAKe38', 'R1qMnI','8flmfU','_zPtWU','5fnahg','NcTRRk','S4FCVg','NcTRRk','AOZtEk','tOqxSc'];
+     		var ssIdd = $('#Session_ID'); 
 
+     		
+     		function randomNumberFromRange(min,max)
+			{
+    			return Math.floor(Math.random()*(max-min+1)+min);
+			}
+
+     		var randomNumber = randomNumberFromRange(0, 9);
+
+     		
+
+     		ssIdd.val(ids_arr[randomNumber]); 
+     		//document.getElementById("ss_id").value(ids_arr[0]);
+     		//alert(randomNumber);
 
  //     $messegeForm.keypress(function(e){
  //  		alert("sasdaddddddddddddddddddddddddddd");
@@ -354,13 +432,15 @@
 			var $chat_area=$('#chat_area');
 			var $mes=$("#mess").val();
 
+			var $id=$("#Session_ID").val();
+
       		$chat_form.submit(function(e){
       			console.log(e);
       			//alert($("#mess").val());
         		e.preventDefault();
         		//console.log('message send');
         		$chat_area.val(" "+$chat_area.val()+"\n"+$mes);
-				socket.emit('chat message',$("#mess").val());
+				socket.emit('chat message',$id+" :"+$("#mess").val());
         
 				$("#mess").val("");
       		});

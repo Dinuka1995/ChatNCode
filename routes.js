@@ -25,7 +25,7 @@ module.exports = function(app) {
     var password = req.body.password;
     var email=req.body.email;
 
-    user_register.register(username,email,password,function (found) {
+    user_register.register(username,res,email,password,function (found) {
          res.json(found);
     });
 	});
